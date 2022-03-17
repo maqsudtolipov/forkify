@@ -8,7 +8,7 @@ const timeout = function (s) {
   });
 };
 
-// https://forkify-api.herokuapp.com/v2 // others key b1461fa0-8477-4817-88a7-433f7d095570
+// https://forkify-api.herokuapp.com/v2 // 8c1709d4-8fb0-45eb-b6de-e6e7b2b879ad
 
 ///////////////////////////////////////
 
