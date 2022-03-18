@@ -539,14 +539,13 @@ const controlRecipes = async function() {
         // 2) Rendering recipe
         _recipeViewJsDefault.default.render(_modelJs.state.recipe);
     } catch (err) {
-        alert(err);
+        console.error(err);
     }
 };
-[
-    'hashchange',
-    'load'
-].forEach((ev)=>window.addEventListener(ev, controlRecipes)
-);
+const init = function() {
+    _recipeViewJsDefault.default.addHandlerrender(controlRecipes);
+};
+init();
 
 },{"core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","./views/recipeView.js":"l60JC","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"49tUX":[function(require,module,exports) {
 var $ = require('../internals/export');
@@ -1618,14 +1617,14 @@ parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe
 );
 var _regeneratorRuntime = require("regenerator-runtime");
 var _configJs = require("./config.js");
-var _helperJs = require("./helper.js");
+var _helpersJs = require("./helpers.js");
 const state = {
     recipe: {
     }
 };
 const loadRecipe = async function(id) {
     try {
-        const data = await _helperJs.getJSON(`${_configJs.API_URL}/${id}`);
+        const data = await _helpersJs.getJSON(`${_configJs.API_URL}/${id}`);
         const { recipe  } = data.data;
         state.recipe = {
             id: recipe.id,
@@ -1644,7 +1643,7 @@ const loadRecipe = async function(id) {
     }
 };
 
-},{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./helper.js":"lVRAz"}],"dXNgZ":[function(require,module,exports) {
+},{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./helpers.js":"hGI1E"}],"dXNgZ":[function(require,module,exports) {
 /**
  * Copyright (c) 2014-present, Facebook, Inc.
  *
@@ -2264,7 +2263,7 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"lVRAz":[function(require,module,exports) {
+},{}],"hGI1E":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getJSON", ()=>getJSON
@@ -2293,7 +2292,7 @@ const getJSON = async function(url) {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","regenerator-runtime":"dXNgZ","./config.js":"k5Hzs"}],"l60JC":[function(require,module,exports) {
+},{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"l60JC":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 // import icons from '../img/icons.svg'; // Parcel 1
@@ -2402,6 +2401,13 @@ class RecipeView {
     </a>
   </div>
     `;
+    }
+    addHandlerrender(handler) {
+        [
+            'hashchange',
+            'load'
+        ].forEach((ev)=>window.addEventListener(ev, handler)
+        );
     }
      #generateMarkupIngredient(ing) {
         return `  
