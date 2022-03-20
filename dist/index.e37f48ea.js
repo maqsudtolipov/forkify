@@ -552,7 +552,8 @@ const controlSearchResults = async function() {
         // 2) Load search results
         await _modelJs.loadSeachResults(query);
         // 3) Render results
-        _resultsViewJsDefault.default.render(_modelJs.state.search.results);
+        // resultsView.render(model.state.search.results);
+        _resultsViewJsDefault.default.render(_modelJs.getSearchResultsPage());
     } catch (err) {
         console.log(err);
     }
@@ -1633,6 +1634,8 @@ parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe
 );
 parcelHelpers.export(exports, "loadSeachResults", ()=>loadSeachResults
 );
+parcelHelpers.export(exports, "getSearchResultsPage", ()=>getSearchResultsPage
+);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
@@ -1641,7 +1644,9 @@ const state = {
     },
     search: {
         query: '',
-        results: []
+        results: [],
+        page: 1,
+        resultsPerPage: _configJs.RES_PER_PAGE
     }
 };
 const loadRecipe = async function(id) {
@@ -1683,7 +1688,12 @@ const loadSeachResults = async function(query) {
         throw err;
     }
 };
-loadSeachResults('pizza');
+const getSearchResultsPage = function(page = state.search.page) {
+    state.search.page = page;
+    const start = (page - 1) * state.search.resultsPerPage; // 0;
+    const end = page * state.search.resultsPerPage; // 9;
+    return state.search.results.slice(start, end);
+};
 
 },{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dXNgZ":[function(require,module,exports) {
 /**
@@ -2274,9 +2284,12 @@ parcelHelpers.export(exports, "TIMEOUT_SECONDS", ()=>TIMEOUT_SECONDS
 );
 parcelHelpers.export(exports, "API_KEY", ()=>API_KEY
 );
+parcelHelpers.export(exports, "RES_PER_PAGE", ()=>RES_PER_PAGE
+);
 const API_URL = 'https://forkify-api.herokuapp.com/api/v2/recipes/';
 const TIMEOUT_SECONDS = 10;
 const API_KEY = '8c1709d4-8fb0-45eb-b6de-e6e7b2b879ad';
+const RES_PER_PAGE = 10;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
@@ -2834,7 +2847,6 @@ class ResultsView extends _viewJsDefault.default {
     _errorMessage = 'No recipes found for your query! Please try again.';
     _message = '';
     _generateMarkup() {
-        console.log(this._data);
         return this._data.map(this._generateMarkupPreview).join('');
     }
     _generateMarkupPreview(results) {
