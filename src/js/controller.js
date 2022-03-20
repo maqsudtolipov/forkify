@@ -7,6 +7,10 @@ import 'core-js/stable'; // polyfilling everything else
 import 'regenerator-runtime/runtime'; // polyfilling async/await
 import { async } from 'regenerator-runtime/runtime';
 
+if(module.hot) {
+  module.hot.accept();
+}
+
 const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1);
@@ -36,7 +40,7 @@ const controlSearchResults = async function () {
     await model.loadSeachResults(query);
 
     // 3) Render results
-    console.log(model.state.search.results);
+    resultsView.render(model.state.search.results);
   } catch (err) {
     console.log(err);
   }
