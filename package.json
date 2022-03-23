@@ -18,8 +18,9 @@
   },
   "homepage": "https://github.com/maqsudtolipov/forkify#readme",
   "devDependencies": {
-    "sass": "^1.49.9",
-    "parcel": "^2.3.2"
+    "@parcel/transformer-sass": "^2.3.2",
+    "parcel": "^2.3.2",
+    "sass": "^1.49.9"
   },
   "dependencies": {
     "core-js": "^3.21.1",
